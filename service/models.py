@@ -31,8 +31,14 @@ class Service(BaseEntity):
 class ServiceBooking(BaseEntity):
 	service = models.ForeignKey('Service', related_name='bookings')
 	status = models.CharField(max_length=30, choices = STATUS_EVENTS, default='Booked')
-	price = models.DecimalField(max_digits=20,decimal_places=4,default=Decimal('0.0000'))
+	price = models.DecimalField(max_digits=20,decimal_places=2,default=Decimal('0.00'))
 	event = models.ForeignKey('Event', related_name='services')	
+	
+	class Meta:
+		abstract = False
+		
+	def __str__(self):
+		return ("%s -- %s")%(self.event.name, self.service.name )
 	
 	
 class Event(BaseEntity):
@@ -42,9 +48,9 @@ class Event(BaseEntity):
 	end_datetime = models.DateTimeField(blank=True,null=True)
 	status = models.CharField(max_length=30, choices = STATUS_EVENTS, default='Booked')
 	customer = models.ForeignKey('customers.Customer',related_name='events',blank=True,null=True)
-	total = models.DecimalField(max_digits=20,decimal_places=4,default=Decimal('0.0000'))
-	paid = models.DecimalField(max_digits=20,decimal_places=4,default=Decimal('0.0000'),blank=True,null=True)
-	due = models.DecimalField(max_digits=20,decimal_places=4,default=Decimal('0.0000'),blank=True,null=True)
+	total = models.DecimalField(max_digits=20,decimal_places=2,default=Decimal('0.00'))
+	paid = models.DecimalField(max_digits=20,decimal_places=2,default=Decimal('0.00'),blank=True,null=True)
+	due = models.DecimalField(max_digits=20,decimal_places=2,default=Decimal('0.00'),blank=True,null=True)
 	
 	class Meta:
 		abstract = False
